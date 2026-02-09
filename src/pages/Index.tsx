@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import type { LucideIcon } from 'lucide-react';
+
+const FloodMap = lazy(() => import('@/components/FloodMap'));
 import Icon from '@/components/ui/icon';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -217,16 +219,16 @@ const Index = () => {
                 <CardDescription>Визуализация рисков по регионам Казахстана</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="aspect-video rounded-lg bg-gradient-to-br from-primary/10 via-secondary/10 to-accent/10 flex items-center justify-center border-2 border-dashed border-border">
-                  <div className="text-center space-y-4">
-                    <Icon name="Map" size={64} className="mx-auto text-muted-foreground" />
-                    <p className="text-lg font-medium text-muted-foreground">Карта будет доступна после интеграции</p>
-                    <Button>
-                      <Icon name="MapPin" size={16} className="mr-2" />
-                      Настроить карту
-                    </Button>
+                <Suspense fallback={
+                  <div className="aspect-video rounded-lg bg-gradient-to-br from-primary/10 via-secondary/10 to-accent/10 flex items-center justify-center border-2 border-dashed border-border">
+                    <div className="text-center space-y-4">
+                      <Icon name="Map" size={64} className="mx-auto text-muted-foreground animate-pulse-slow" />
+                      <p className="text-lg font-medium text-muted-foreground">Загрузка карты...</p>
+                    </div>
                   </div>
-                </div>
+                }>
+                  <FloodMap />
+                </Suspense>
               </CardContent>
             </Card>
           </div>
